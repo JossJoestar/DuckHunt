@@ -13,8 +13,8 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:srcCompat="@drawable/duck"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="124dp" />
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="227dp" />
 
     <ImageView
         android:id="@+id/imageViewCounter"
@@ -39,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

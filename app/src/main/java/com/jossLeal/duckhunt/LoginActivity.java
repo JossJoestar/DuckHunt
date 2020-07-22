@@ -3,6 +3,7 @@ package com.jossLeal.duckhunt;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,12 @@ public class LoginActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_login);
 		etNick = findViewById(R.id.editTextNick);
 		btnStart = findViewById(R.id.buttonStart);
+		
+		// Asignar Fuentes personalizadas
+		Typeface typeface = Typeface.createFromAsset(getAssets(), "pixel.ttf");
+		etNick.setTypeface(typeface);
+		btnStart.setTypeface(typeface);
+		
 		
 		// Evento: Evento Click
 		btnStart.setOnClickListener(new View.OnClickListener() {
