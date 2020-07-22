@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jossLeal.duckhunt.common.Constantes;
 
@@ -31,6 +33,26 @@ public class GameActivity extends AppCompatActivity {
 		initViewComponets();
 		eventos();
 		initPantalla();
+		initCuentaAtras();
+	}
+	
+	private void initCuentaAtras() {
+		new CountDownTimer(25000, 1000) {
+			@Override
+			public void onTick(long millisUntilFinished) {
+				long segundosRestantes = millisUntilFinished / 1000;
+				tvTimer.setText(segundosRestantes + "s");
+				moveDuck();
+			}
+			
+			@Override
+			public void onFinish() {
+				tvTimer.setText("0s");
+				Toast mensaje = Toast.makeText(getApplicationContext(),"Se ha terminado el juego tu puntuaje: "+tvCounterDucks.getText(), Toast.LENGTH_LONG);
+				mensaje.show();
+				ivDuck.setEnabled(false);
+			}
+		}.start();
 	}
 	
 	private void initPantalla() {
@@ -90,8 +112,8 @@ public class GameActivity extends AppCompatActivity {
 		int maximoX = anchoPantalla - ivDuck.getWidth();
 		int maximoY = altoPantalla - ivDuck.getHeight();
 		//Generamos 2 numeros aleatorios, uno para la cordenara X y otro para Y
-		int randomX = aleatorio.nextInt(((maximoX - min)+ 1));
-		int randomY = aleatorio.nextInt(((maximoY - min)+ 1));
+		int randomX = aleatorio.nextInt(((maximoX - min) + 1));
+		int randomY = aleatorio.nextInt(((maximoY - min) + 1));
 		
 		//Utilizamos los numeros aleatorios para mover el pato a esa posicion
 		ivDuck.setX(randomX);
