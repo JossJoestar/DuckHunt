@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 				else if(nick.length() < 3)
 					etNick.setError("Debe tener al menos 3 caracteres");
 				else{
+					etNick.setText("");
 					Intent i = new Intent(LoginActivity.this, GameActivity.class);
 					i.putExtra(Constantes.EXTRA_NICK,nick);
 					startActivity(i);

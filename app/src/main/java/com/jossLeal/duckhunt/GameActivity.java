@@ -51,7 +51,6 @@ public class GameActivity extends AppCompatActivity {
 			@Override
 			public void onFinish() {
 				gameOver = true;
-				ivDuck.setEnabled(false);
 				tvTimer.setText("0s");
 				mostrarDialogGameOver();
 			}
@@ -61,21 +60,29 @@ public class GameActivity extends AppCompatActivity {
 	private void mostrarDialogGameOver() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage("Has conseguido cazar: "+counter+" patos.").setTitle("Game Over");
-		builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener(){
+		builder.setPositiveButton("Reiniciar", new DialogInterface.OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialogInterface, int i) {
-			
+				itsTimeToRewind();
 			}
 		});
 		builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialogInterface, int i) {
+				dialogInterface.dismiss();
 				GameActivity.this.finish();
 			}
 		});
 		
 		AlertDialog dialog = builder.create();
 		dialog.show();
+	}
+	
+	private void itsTimeToRewind() {
+		counter = 0;
+		tvCounterDucks.setText("0");
+		gameOver = false;
+		initCuentaAtras();
 	}
 	
 	private void initPantalla() {
