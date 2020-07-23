@@ -1,7 +1,9 @@
 package com.jossLeal.duckhunt;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
 	int anchoPantalla;
 	int altoPantalla;
 	Random aleatorio;
+	boolean gameOver = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
 	}
 	
 	private void initCuentaAtras() {
-		new CountDownTimer(25000, 1000) {
+		new CountDownTimer(60000, 1000) {
 			@Override
 			public void onTick(long millisUntilFinished) {
 				long segundosRestantes = millisUntilFinished / 1000;
@@ -47,12 +50,32 @@ public class GameActivity extends AppCompatActivity {
 			
 			@Override
 			public void onFinish() {
-				tvTimer.setText("0s");
-				Toast mensaje = Toast.makeText(getApplicationContext(),"Se ha terminado el juego tu puntuaje: "+tvCounterDucks.getText(), Toast.LENGTH_LONG);
-				mensaje.show();
+				gameOver = true;
 				ivDuck.setEnabled(false);
+				tvTimer.setText("0s");
+				mostrarDialogGameOver();
 			}
 		}.start();
+	}
+	
+	private void mostrarDialogGameOver() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Has conseguido cazar: "+counter+" patos.").setTitle("Game Over");
+		builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {
+			
+			}
+		});
+		builder.setNegativeButton("Salir", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialogInterface, int i) {
+				GameActivity.this.finish();
+			}
+		});
+		
+		AlertDialog dialog = builder.create();
+		dialog.show();
 	}
 	
 	private void initPantalla() {
@@ -91,18 +114,21 @@ public class GameActivity extends AppCompatActivity {
 		ivDuck.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				ivDuck.setEnabled(false);
-				counter++;
-				tvCounterDucks.setText(String.valueOf(counter));
-				ivDuck.setImageResource(R.drawable.duck_clicked);
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						ivDuck.setImageResource(R.drawable.duck);
-						moveDuck();
-						ivDuck.setEnabled(true);
-					}
-				}, 500);
+				if(!gameOver) {
+					ivDuck.setEnabled(false);
+					counter++;
+					tvCounterDucks.setText(String.valueOf(counter));
+					ivDuck.setImageResource(R.drawable.duck_clicked);
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							ivDuck.setImageResource(R.drawable.duck);
+							ivDuck.setEnabled(true);
+							moveDuck();
+						}
+					}, 500);
+					
+				}
 			}
 		});
 	}
@@ -111,11 +137,8 @@ public class GameActivity extends AppCompatActivity {
 		int min = 0;
 		int maximoX = anchoPantalla - ivDuck.getWidth();
 		int maximoY = altoPantalla - ivDuck.getHeight();
-		//Generamos 2 numeros aleatorios, uno para la cordenara X y otro para Y
 		int randomX = aleatorio.nextInt(((maximoX - min) + 1));
 		int randomY = aleatorio.nextInt(((maximoY - min) + 1));
-		
-		//Utilizamos los numeros aleatorios para mover el pato a esa posicion
 		ivDuck.setX(randomX);
 		ivDuck.setY(randomY);
 	}
